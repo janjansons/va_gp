@@ -8,10 +8,10 @@ def send_email(subject, recipient, message):
     """
     Izsūta e-pastu ar norādīto tēmu un saturu.
     """
-    smtp_server = "smtp.example.com"  # Norādiet SMTP serveri
-    smtp_port = 587  # Parasti 587 vai 465
-    smtp_user = "your_email@example.com"  # Jūsu e-pasta adrese
-    smtp_password = "your_password"  # Jūsu e-pasta parole
+    smtp_server = "smtp.example.com"  
+    smtp_port = 587  
+    smtp_user = "your_email@example.com"  
+    smtp_password = "your_password"  
 
     try:
         msg = MIMEMultipart()
