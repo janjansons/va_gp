@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lietotāja Kartiņa</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+        <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
+      </svg>
+</head>
+<body>
+    <a class="icon-link" href="{{ url_for('index') }}">
+        Sākums
+        <i class="bi bi-house"></i>
+      </a>
+    <div class="container mt-4">
+        <h1 class="mb-4">Lietotāja kartiņa</h1>
+  
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ lietotajs.lietotaja_vards }}</h5>
+                <p class="card-text">Vārds: {{ lietotajs.vards }}</p>
+                <p class="card-text">Uzvārds: {{ lietotajs.uzvards }}</p>
+                <p class="card-text">Amats: {{ lietotajs.amats }}</p>
+                <p class="card-text">E-pasts: {{ lietotajs.epasts }}</p>
+                <p class="card-text">Telefona Nr.: {{ lietotajs.tel_nr }}</p>
+                <p class="card-text">AD grupas:</p>
+                <ul class="list-group list-group-flush">
+            {% for group in lietotajs.groups %}
+                <li class="list-group-item">{{ group.group_name }}</li>
+            {% else %}
+                <li class="list-group-item">Lietotājam nav pievienotu grupu.</li>
+            {% endfor %}
+        </ul>
+            </div>
+        </div>
+<h3>IS tiesības</h3>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover">
+        <thead class="thead-light">
+        <tr>
+            <th>IS nosaukums</th>
+            <th>tiesības</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        {% for is_name, tiesibas in existing_permissions.items() %}
+        <tr>
+            <td>{{ is_name }}</td>
+            <td>
+                <ul>
+                    {% for tiesiba in tiesibas %}
+                    <li>
+                        {{ tiesiba.t_name }}
+                        <form method="POST" style="display:inline;">
+                            <input type="hidden" name="delete_is_id" value="{{ tiesiba.is_id }}">
+                            <input type="hidden" name="delete_tiesibas_id" value="{{ tiesiba.tiesibas_id }}">
+                            <button type="submit" class="btn btn-link">dzēst</button>
+                        </form>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </td>
+            
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+    </div>
+<!-- Add New Permissions -->
+<h4>Pievienot Jaunas IS tiesības</h4>
+<form method="POST">
+    <div class="form-group">
+        <label for="is_id">IS Nosaukums</label>
+        <select name="is_id" id="is_id" class="form-control" required>
+            {% for is_entry in available_is %}
+            <option value="{{ is_entry.id }}">{{ is_entry.is_name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="tiesibas_ids">Tiesības</label>
+        <select name="tiesibas_ids" id="tiesibas_ids" class="form-control" multiple required>
+            {% for tiesibas_entry in available_tiesibas %}
+            <option value="{{ tiesibas_entry.id }}">{{ tiesibas_entry.t_name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Saglabāt</button>
+</form>
+
+        
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

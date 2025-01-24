@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AD Sinhronizācija</title>
+     <!-- Bootstrap CSS -->
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+        <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
+      </svg>
+      
+</head>
+<body>
+    <a class="icon-link" href="{{ url_for('index') }}">
+        Sākums
+        <i class="bi bi-house"></i>
+      </a> 
+    <div class="container mt-5">
+
+        <h1 class="mb-4 text-center">Active Directory Sinhronizācija</h1>
+        
+
+        <!-- Sinhronizācijas poga -->
+        <div class="text-center mb-4">
+            <form method="POST" action="{{ url_for('ad_sync') }}">
+                <button type="submit" class="btn btn-primary btn-lg">Sinhronizēt</button>
+            </form>
+        </div>
+
+        <!-- Lietotāju tabula -->
+        {% if users %}
+        <h2 class="mb-3">Sinhronizētie lietotāji</h2>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Vārds</th>
+                        <th>Uzvārds</th>
+                        <th>E-pasts</th>
+                        <th>Telefons</th>
+                        <th>Amats</th>
+                        <th>Lietotāja vārds</th>
+                        <th>Pēdējā sinhronizācija</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        {% if user.statuss == 1%}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ user.vards }}</td>
+                        <td>{{ user.uzvards }}</td>
+                        <td>{{ user.epasts }}</td>
+                        <td>{{ user.tel_nr }}</td>
+                        <td>{{ user.amats }}</td>
+                        <td>{{ user.samaccountname }}</td>
+                        <td>{{ user.last_synced.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info text-center">
+            <p>Sinhronizētu lietotāju nav.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <div class="container mt-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+</body>
+</html>

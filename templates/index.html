@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Index Page</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open" viewBox="0 0 16 16">
+        <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1"/>
+        <path d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117M11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5M4 1.934V15h6V1.077z"/>
+      </svg>
+</head>
+<body>
+<a href="/logout" >
+    <i class="bi bi-house"></i>
+    Izlogoties</a>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Kreisās puses izvēlne -->
+            <nav class="col-md-2 bg-light sidebar">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <!-- Iestatījumi -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="/add_is">Pievienot sistēmu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/add_tiesibas">Pievienot tiesības</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/ad_sync">Sinhronizācija</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <!-- Galvenais saturs -->
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+		<h1 class="mt-4 mb-4">Lietotāju saraksts</h1>
+                <table class="table table-striped table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>Lietotāja vārds</th>
+                    <th>Vārds</th>
+                    <th>Uzvārds</th>
+                    <th>E-pasts</th>
+                    <th>Amats</th>
+                    <th>Tiesību piešķiršanas datums</th>
+                    <th>Statuss</th>
+		    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in results %}
+                <tr {% if row.statuss == 3 %}class="table-warning"{% endif %}>
+                    <td>{{ row.samaccountname }}</td>
+                    <td>{{ row.vards }}</td>
+                    <td>{{ row.uzvards }}</td>
+                    <td>{{ row.epasts }}</td>
+                    <td>{{ row.amats }}</td>
+                    <td>{{ row.acc_date }}</td>
+                    <td>
+                        {% if row.statuss == 1 %}
+                            Aktīvs
+                        {% elif row.statuss == 3 %}
+                            Dzēsts
+                        {% else %}
+                            Nedefinēts
+                        {% endif %}
+                    </td>
+                    <td><a href="{{ url_for('lietotaja_kartina', id=row.id) }}">Atvērt</a></td>                   
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
